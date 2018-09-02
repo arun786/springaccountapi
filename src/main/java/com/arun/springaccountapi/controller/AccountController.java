@@ -5,6 +5,7 @@ import com.arun.springaccountapi.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,5 +25,15 @@ public class AccountController {
     @GetMapping("/accounts/v1/account/{accountId}")
     List<Account> getAccount(@PathVariable(name = "accountId") String accountId) {
         return accountService.getAccount(accountId);
+    }
+
+    @GetMapping("/accounts/v2/account/{accountId}")
+    List<Account> getOnlyAccount(@PathVariable(name = "accountId") String accountId,
+                                 @RequestParam(name = "account") String account) {
+        boolean isAccountOnly = false;
+        if (account.equalsIgnoreCase("account")) {
+            isAccountOnly = true;
+        }
+        return accountService.getAccount(accountId, isAccountOnly);
     }
 }

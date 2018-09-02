@@ -18,7 +18,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public List<Account> getAllAccount() {
         String sql = "select * from Account";
-        return namedParameterJdbcTemplate.query(sql, new AccountResultSetExtractor());
+        return namedParameterJdbcTemplate.query(sql, new AccountResultSetExtractor(false, false));
     }
 
     @Override
@@ -27,6 +27,16 @@ public class AccountDaoImpl implements AccountDao {
         mapSqlParameterSource.addValue("accountId", accountId);
 
         String sql = "select * from Account where accountid = :accountId";
-        return namedParameterJdbcTemplate.query(sql, mapSqlParameterSource, new AccountResultSetExtractor());
+        return namedParameterJdbcTemplate.query(sql, mapSqlParameterSource, new AccountResultSetExtractor(false, false));
+    }
+
+    @Override
+    public List<Account> getAccount(String accountId, boolean isAccountOnly) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("accountId", accountId);
+
+        String sql = "select * from Account where accountid = :accountId";
+
+        return namedParameterJdbcTemplate.query(sql, mapSqlParameterSource, new AccountResultSetExtractor(true, false));
     }
 }

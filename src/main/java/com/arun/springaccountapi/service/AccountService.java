@@ -8,4 +8,6 @@ public interface AccountService {
     List<Account> getAllAccount();
 
     List<Account> getAccount(String accountId);
+
+    List<Account> getAccount(String accountId, boolean isAccountOnly);
 }

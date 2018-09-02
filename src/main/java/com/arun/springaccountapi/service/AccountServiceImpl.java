@@ -21,4 +21,9 @@ public class AccountServiceImpl implements AccountService {
     public List<Account> getAccount(String accountId) {
         return accountDao.getAccount(accountId);
     }
+
+    @Override
+    public List<Account> getAccount(String accountId, boolean isAccountOnly) {
+        return accountDao.getAccount(accountId, true);
+    }
 }
