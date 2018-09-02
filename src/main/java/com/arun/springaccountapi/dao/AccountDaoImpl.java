@@ -3,6 +3,7 @@ package com.arun.springaccountapi.dao;
 import com.arun.springaccountapi.dao.mapper.AccountResultSetExtractor;
 import com.arun.springaccountapi.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +19,14 @@ public class AccountDaoImpl implements AccountDao {
     public List<Account> getAllAccount() {
         String sql = "select * from Account";
         return namedParameterJdbcTemplate.query(sql, new AccountResultSetExtractor());
+    }
+
+    @Override
+    public List<Account> getAccount(String accountId) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("accountId", accountId);
+
+        String sql = "select * from Account where accountid = :accountId";
+        return namedParameterJdbcTemplate.query(sql, mapSqlParameterSource, new AccountResultSetExtractor());
     }
 }

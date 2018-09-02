@@ -1,4 +1,5 @@
 package com.arun.springaccountapi.dao.mapper;
+import java.util.Date;
 
 import com.arun.springaccountapi.model.Account;
 import com.arun.springaccountapi.model.Container;
@@ -90,14 +91,22 @@ public class AccountResultSetExtractor implements ResultSetExtractor<List<Accoun
     }
 
     private Account getAccountDetails(ResultSet rs, Account account) throws SQLException {
+
         account.setId(rs.getString("accountid"));
         account.setAccountName(rs.getString("accountname"));
+        account.setAccountStatus(rs.getString("accountStatus"));
+        account.setAccountStartDate(rs.getDate("accountStartDate"));
+        account.setAccountEndDate(rs.getDate("accountEndDate"));
         return account;
     }
 
     private Site getSiteDetails(ResultSet rs, Site site) throws SQLException {
         site.setId(rs.getString("siteid"));
         site.setName(rs.getString("sitename"));
+        site.setLocation(rs.getString("location"));
+        site.setStartDate(rs.getDate("sitestartDate"));
+        site.setEndDate(rs.getDate("siteendDate"));
+        site.setStatus(rs.getString("sitestatus"));
         return site;
     }
 
@@ -105,6 +114,11 @@ public class AccountResultSetExtractor implements ResultSetExtractor<List<Accoun
         Container container = new Container();
         container.setId(rs.getString("containerid"));
         container.setName(rs.getString("containername"));
+        container.setType(rs.getString("containertype"));
+        container.setStatus(rs.getString("containerstatus"));
+        container.setStartDate(rs.getDate("startDate"));
+        container.setEndDate(rs.getDate("endDate"));
+
         return container;
     }
 }

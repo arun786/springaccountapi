@@ -7,4 +7,6 @@ import java.util.List;
 public interface AccountDao {
 
     List<Account> getAllAccount();
+
+    List<Account> getAccount(String accountId);
 }
