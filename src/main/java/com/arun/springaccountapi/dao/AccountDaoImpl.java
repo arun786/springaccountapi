@@ -31,12 +31,12 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<Account> getAccount(String accountId, boolean isAccountOnly) {
+    public List<Account> getAccount(String accountId, boolean isAccountOnly, boolean isSiteOnly) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("accountId", accountId);
 
         String sql = "select * from Account where accountid = :accountId";
 
-        return namedParameterJdbcTemplate.query(sql, mapSqlParameterSource, new AccountResultSetExtractor(true, false));
+        return namedParameterJdbcTemplate.query(sql, mapSqlParameterSource, new AccountResultSetExtractor(isAccountOnly, isSiteOnly));
     }
 }

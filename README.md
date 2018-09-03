@@ -4,7 +4,6 @@
 ## Use of ResultSetExtractor
 
     package com.arun.springaccountapi.dao.mapper;
-    import java.util.Date;
     
     import com.arun.springaccountapi.model.Account;
     import com.arun.springaccountapi.model.Container;
@@ -20,6 +19,14 @@
     import java.util.Map;
     
     public class AccountResultSetExtractor implements ResultSetExtractor<List<Account>> {
+    
+        private boolean isAccountOnly;
+        private boolean isAccountAndSiteOnly;
+    
+        public AccountResultSetExtractor(boolean isAccountOnly, boolean isAccountAndSiteOnly) {
+            this.isAccountOnly = isAccountOnly;
+            this.isAccountAndSiteOnly = isAccountAndSiteOnly;
+        }
     
         @Override
         public List<Account> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -45,47 +52,54 @@
                     account = new Account();
                     account = getAccountDetails(rs, account);
                     accountMap.put(accountId, account);
-                    sites = new ArrayList<>();
-                    site = new Site();
-                    getSiteDetails(rs, site);
     
-                    Container container = getContainerDetails(rs);
-                    containers = new ArrayList<>();
-                    containers.add(container);
+                    if (!isAccountOnly) {
+                        sites = new ArrayList<>();
+                        site = new Site();
+                        getSiteDetails(rs, site);
     
-                    site.setContainers(containers);
-                } else if (isSitePresent) {
+                        Container container = getContainerDetails(rs);
+                        containers = new ArrayList<>();
+                        containers.add(container);
     
-                    /**
-                     * Site already present
-                     */
-    
-                    Container container = getContainerDetails(rs);
-                    containers.add(container);
-    
-                    site.setContainers(containers);
-                    boolean isSitePresentInList = sites.contains(site);
-    
-                    if (isSitePresentInList) {
-                        sites.remove(site);
+                        site.setContainers(containers);
                     }
-                } else {
+                } else if (!isAccountOnly) {
+                    if (isSitePresent) {
     
-                    /**
-                     * Its a new Site
-                     */
-                    site = new Site();
-                    site = getSiteDetails(rs, site);
-                    containers = new ArrayList<>();
-                    Container container = getContainerDetails(rs);
-                    containers.add(container);
-                    site.setContainers(containers);
+                        /**
+                         * Site already present
+                         */
     
+                        Container container = getContainerDetails(rs);
+                        containers.add(container);
+    
+                        site.setContainers(containers);
+                        boolean isSitePresentInList = sites.contains(site);
+    
+                        if (isSitePresentInList) {
+                            sites.remove(site);
+                        }
+                    } else {
+    
+                        /**
+                         * Its a new Site
+                         */
+                        site = new Site();
+                        site = getSiteDetails(rs, site);
+                        containers = new ArrayList<>();
+                        Container container = getContainerDetails(rs);
+                        containers.add(container);
+                        site.setContainers(containers);
+                    }
                 }
     
-                sites.add(site);
-                siteMap.put(siteId, sites);
-                account.setSites(sites);
+                if(!isAccountOnly){
+                    sites.add(site);
+                    siteMap.put(siteId, sites);
+                    account.setSites(sites);
+                }
+    
                 final boolean isAccountPresent = accounts.contains(account);
                 if (isAccountPresent) {
                     accounts.remove(account);
@@ -127,4 +141,5 @@
             return container;
         }
     }
+
  

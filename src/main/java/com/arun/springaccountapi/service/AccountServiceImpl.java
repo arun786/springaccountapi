@@ -23,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> getAccount(String accountId, boolean isAccountOnly) {
-        return accountDao.getAccount(accountId, true);
+    public List<Account> getAccount(String accountId, boolean isAccountOnly, boolean isSiteOnly) {
+        return accountDao.getAccount(accountId, isAccountOnly, isSiteOnly);
     }
 }

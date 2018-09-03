@@ -9,5 +9,5 @@ public interface AccountService {
 
     List<Account> getAccount(String accountId);
 
-    List<Account> getAccount(String accountId, boolean isAccountOnly);
+    List<Account> getAccount(String accountId, boolean isAccountOnly, boolean isSiteOnly);
 }
